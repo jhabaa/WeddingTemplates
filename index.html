@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micheline & Jeroen Wedding</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: "maratre";
+            src: url(Maratre.otf);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        p{
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 1.2rem;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* RSVP Button */
+        .rsvp-btn {
+            position: fixed;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            padding: 10px 20px;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rsvp-btn:hover {
+            color: whitesmoke;
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(0, 0, 0, 0.701), rgba(97, 97, 97, 0.658));
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 30px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #e91e63;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero-content h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: whitesmoke;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            font-weight: 100;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        .clients-names {
+            font-family: maratre;
+            font-size: 4.5rem;
+            margin-bottom: 30px;
+            color: white;
+            font-weight: 700;
+        }
+
+        .watch-btn {
+            background: linear-gradient(to right, #e91e63, #f44336);
+            border: none;
+            border-radius: 50px;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .watch-btn:hover {
+            transform: translateY(15px);
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.6);
+        }
+
+        /* Video Modal */
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .video-container {
+            position: relative;
+            width: 90%;
+            max-width: 1000px;
+            height: 80vh;
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* Footer */
+        footer {
+            position:fixed;
+            bottom: 0px;
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 1rem;
+            margin-top: 40px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content h2 {
+                font-size: 1.5rem;
+            }
+            
+            .clients-names {
+                font-size: 2rem;
+            }
+            
+            .watch-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+            
+            .rsvp-btn {
+                top: 10px;
+                left: 10px;
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .clients-names {
+                font-size: 1.5rem;
+            }
+            
+            .watch-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- RSVP Button -->
+    <div class="rsvp-btn" id="rsvpBtn">
+        <a href="https://api.whatsapp.com/send?phone=0032486650303&text=Hello%20there! I need to contact you about the wedding.">Contact Me</a>
+    </div>
+
+    <!-- Hero Section with Video Background -->
+    <section class="hero">
+        <video autoplay muted loop class="hero-video" id="heroVideo">
+            <source src="trailer.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <div class="hero-content">
+            <h2>Wedding Celebration</h2>
+            <div class="clients-names">Micheline & Jeroen</div>
+            <p>05.06.2026</p>
+            <button class="watch-btn" id="watchBtn">
+                <i class="fas fa-play-circle"></i> Watch Video
+            </button>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-container">
+            <span class="close-btn" id="closeBtn">&times;</span>
+            <video controls id="fullVideo">
+                <source src="fullmovie.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Micheline & Jeroen Wedding. All rights reserved By Heanlab.</p>
+    </footer>
+
+    <script>
+        // Video modal functionality
+        const watchBtn = document.getElementById('watchBtn');
+        const videoModal = document.getElementById('videoModal');
+        const closeBtn = document.getElementById('closeBtn');
+        const fullVideo = document.getElementById('fullVideo');
+        const heroVideo = document.getElementById('heroVideo');
+
+        // When the user clicks the "Watch Video" button, open the modal
+        watchBtn.addEventListener('click', function() {
+            videoModal.classList.add('active');
+            fullVideo.play();
+            heroVideo.pause();
+        });
+
+        // When the user clicks on <span> (x), close the modal
+        closeBtn.addEventListener('click', function() {
+            videoModal.classList.remove('active');
+            fullVideo.pause();
+            heroVideo.play();
+        });
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.addEventListener('click', function(event) {
+            if (event.target === videoModal) {
+                videoModal.classList.remove('active');
+                fullVideo.pause();
+                heroVideo.play();
+            }
+        });
+    </script>
+</body>
+</html>
