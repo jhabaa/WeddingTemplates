@@ -312,8 +312,7 @@
     <div class="video-modal" id="videoModal">
         <div class="video-container">
             <span class="close-btn" id="closeBtn">&times;</span>
-            <video controls id="fullVideo">
-                <source src="fullmovie.mp4" type="video/mp4">
+            <video controls id="fullVideo" preload="none">
                 Your browser does not support the video tag.
             </video>
         </div>
@@ -335,6 +334,9 @@
         // When the user clicks the "Watch Video" button, open the modal
         watchBtn.addEventListener('click', function() {
             videoModal.classList.add('active');
+            if (!fullVideo.src || fullVideo.src === "") {
+                fullVideo.src = 'fullmovie.mp4';
+            }
             fullVideo.play();
             heroVideo.pause();
         });
